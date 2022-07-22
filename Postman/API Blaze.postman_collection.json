@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "8f6a27ba-d290-4ac2-9141-449f6140c8c1",
+		"name": "API Blaze",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13364551"
+	},
+	"item": [
+		{
+			"name": "Teste",
+			"item": [
+				{
+					"name": "crash_games current",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://blaze.com/api/crash_games/current",
+							"protocol": "https",
+							"host": [
+								"blaze",
+								"com"
+							],
+							"path": [
+								"api",
+								"crash_games",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crash_games recent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://blaze.com/api/crash_games/recent",
+							"protocol": "https",
+							"host": [
+								"blaze",
+								"com"
+							],
+							"path": [
+								"api",
+								"crash_games",
+								"recent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cdn-cgi run",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "chart room",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://blaze.com/api/chat_rooms/2",
+							"protocol": "https",
+							"host": [
+								"blaze",
+								"com"
+							],
+							"path": [
+								"api",
+								"chat_rooms",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "currences",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://blaze.com/api/currencies",
+							"protocol": "https",
+							"host": [
+								"blaze",
+								"com"
+							],
+							"path": [
+								"api",
+								"currencies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "configurations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://blaze.com/api/settings",
+							"protocol": "https",
+							"host": [
+								"blaze",
+								"com"
+							],
+							"path": [
+								"api",
+								"settings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "chat room",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://blaze.com/api/chat_rooms",
+							"protocol": "https",
+							"host": [
+								"blaze",
+								"com"
+							],
+							"path": [
+								"api",
+								"chat_rooms"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
