@@ -116,6 +116,61 @@ CREATE TABLE IF NOT EXISTS `blazeaposta`.`state` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `blazeaposta`.`bot`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `blazeaposta`.`bot` (
+  `bot_id` INT NOT NULL AUTO_INCREMENT,
+  `bot_token` VARCHAR(200) NOT NULL,
+  `bot_key` VARCHAR(70) NULL,
+  `bot_name` VARCHAR(100) NULL,
+  `bot_username` VARCHAR(100) NULL,
+  `bot_active` TINYINT NOT NULL COMMENT '1 - active\n0 - inactive',
+  PRIMARY KEY (`bot_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `blazeaposta`.`chat_user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `blazeaposta`.`chat_user` (
+  `cha_id` INT NOT NULL AUTO_INCREMENT,
+  `cha_bot_id` INT NOT NULL,
+  `cha_key` VARCHAR(70) NOT NULL,
+  `cha_firstname` VARCHAR(100) NULL,
+  `cha_lastname` VARCHAR(100) NULL,
+  `cha_update_id` VARCHAR(45) NOT NULL,
+  `cha_type` INT NOT NULL COMMENT '1 - private\n2 - group\n3 - channel',
+  `cha_boot` TINYINT NOT NULL COMMENT '1 - is bot\n0 - is not bot',
+  `cha_created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`cha_id`),
+  INDEX `fk_chat_bot1_idx` (`cha_bot_id` ASC) VISIBLE,
+  CONSTRAINT `fk_chat_bot1`
+    FOREIGN KEY (`cha_bot_id`)
+    REFERENCES `blazeaposta`.`bot` (`bot_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `blazeaposta`.`message`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `blazeaposta`.`message` (
+  `mes_id` INT NOT NULL AUTO_INCREMENT,
+  `mes_cha_id` INT NOT NULL,
+  `mes_text` TEXT NULL,
+  `mes_created` TIMESTAMP NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`mes_id`),
+  INDEX `fk_message_chat1_idx` (`mes_cha_id` ASC) VISIBLE,
+  CONSTRAINT `fk_message_chat1`
+    FOREIGN KEY (`mes_cha_id`)
+    REFERENCES `blazeaposta`.`chat_user` (`cha_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

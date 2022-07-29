@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Teste\TesteController;
+use App\Http\Controllers\Bot\BotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,4 @@ Route::get('/', function () {
 });
 
 Route::get('teste', [TesteController::class,'teste']);
+Route::get('teste2', [BotController::class,'sendMessageBot']);
