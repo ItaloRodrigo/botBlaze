@@ -13,6 +13,17 @@ class ChatUser extends Model
 
     protected $primaryKey = 'cha_id';
 
+    protected $fillable = [
+        'cha_id',
+        'cha_bot_id',
+        'cha_key',
+        'cha_firstname',
+        'cha_lastname',
+        'cha_updated_id',
+        'cha_type',
+        'cha_boot'
+    ];
+
 
     public static function updateAllChats($telegram){
 

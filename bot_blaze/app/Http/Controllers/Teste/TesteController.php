@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Teste;
 
 use App\Http\Controllers\Controller;
+use App\Services\TelegramBotClass;
 use Illuminate\Http\Request;
 use Telegram\Bot\Api;
 
@@ -10,10 +11,10 @@ class TesteController extends Controller
 {
 
     public function teste(){
-        $telegram = new Api('5546066078:AAGu7OdrsRjiGQwl_IY2kBIgNnqy_7OSKCU');
+        // $telegram = new Api('5546066078:AAGu7OdrsRjiGQwl_IY2kBIgNnqy_7OSKCU');
         // $telegram = new Api('TELEGRAM_BOT_TOKEN');
-        $teste = $telegram->getUpdates();
-
+        // $teste = $telegram->getUpdates();
+        // $bot = TelegramBotClass();
 
 
         // acessos
@@ -22,7 +23,7 @@ class TesteController extends Controller
          * 2 - $teste[0]['message']
          * 3 -
          */
-        dd($teste);
+        // dd($teste);
         // dd($teste[0]['message']);
 
 

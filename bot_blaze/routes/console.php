@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\BotTelegram;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -17,3 +18,15 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('teste', function () {
+    // $bot = new BotTelegram();
+    // $bot->handle(new TelegramBot());
+})->purpose('Display an inspiring quote');
+
+// Artisan::command('bot:telegram', function () {
+//     $this->comment("Iniciando o serviço!");
+//     // BotTelegram::class;
+//     $this->call('bot:telegram');
+//     $this->comment("Finalizando o serviço!");
+// })->purpose('Display an inspiring quote');
