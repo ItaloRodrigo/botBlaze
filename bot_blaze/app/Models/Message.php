@@ -12,4 +12,14 @@ class Message extends Model
     protected $table = 'message';
 
     protected $primaryKey = 'mes_id';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'mes_id',
+        'mes_cha_id',
+        'cha_key',
+        'mes_text',
+        'mes_created'
+    ];
 }

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Bot;
 use App\Models\ChatUser;
+use Illuminate\Support\Arr;
 use Telegram\Bot\Api;
 
 class TelegramBotClass{
@@ -16,7 +17,25 @@ class TelegramBotClass{
         $this->bot = Bot::where('bot_token',$this->token)->get();
     }
 
-    public function getHistoryBot(){
+    /**
+     * Métodos públicos
+     *
+     */
+
+    public function sendMessage(){
+
+        $affected = $this->updateChatUser($this->getHistoryBot());
+        // dd($response[0]["message"]);
+
+        return $affected;
+    }
+
+
+    public function getHistoryBotJSON(){
+        return json_encode($this->getHistoryBot()[0]);
+    }
+
+    protected function getHistoryBot(){
         //Requisita da API do Telegram o histório do chat
         $telegram = new Api($this->token);
 
@@ -24,44 +43,40 @@ class TelegramBotClass{
         return $history;
     }
 
-    public static function teste(){
-        return "teste do telegram bot";
-    }
-
-    public function sendMessage(){
-
-
-        $teste = $this->updateChatUser($this->getHistoryBot());
-        // dd($response[0]["message"]);
-
-        return $teste;
-    }
-
     protected function updateChatUser($history){
-        $teste = '';
 
+        $affecteds = 0;
+        dd($history);
         foreach ($history as $key => $chat){
-
-            $ok = ChatUser::where('cha_key',$chat["message"]['chat']['id'])->get();
+            $newchat = ChatUser::getChat($chat);
+            //---
+            $ok = ChatUser::where('cha_key',$newchat['cha_key'])->get();
 
             if(count($ok) == 0){
                 /**
-                 * Preciso chamar a ChatUser e inserir o novo registro
+                 * Registra um novo chat de usuário
                  */
                 ChatUser::create([
                     'cha_id' => 0,
-                    'cha_bot_id' => $this->bot->cha_bot_id,
-                    'cha_key' => $chat["message"]['chat']['id'],
-                    'cha_firstname' => $chat["message"]['chat']['id'],
-                    'cha_lastname' => $chat["message"]['chat']['id'],
-                    'cha_updated_id' => $chat["message"]['chat']['id'],
-                    'cha_type' => $chat["message"]['chat']['id'],
-                    'cha_boot' => $chat["message"]['chat']['id']
+                    'cha_bot_id' => $this->bot[0]->bot_id,
+                    'cha_key' => $newchat['cha_key'],
+                    'cha_firstname' => $newchat['cha_firstname'],
+                    'cha_lastname' => $newchat['cha_lastname'],
+                    'cha_update_id' => $newchat['cha_update_id'],
+                    'cha_type' => $newchat['cha_type'],
+                    'cha_boot' => $newchat['cha_boot'],
                 ]);
+                /**
+                 * Registra a mensagem do usuário
+                 * [FALTA FAZER um COUNT(*) NA TABELA MENSAGEM FILTRANDO POR DIA PRA IDENTIFICAR AS NOVAS MENSAGENS]
+                 */
+
+
+                //---
+                $affecteds ++;
             }
         }
-
-        return $teste;
+        return $affecteds;
     }
 
 }

@@ -44,6 +44,9 @@ class TesteController extends Controller
         // $messageId = $response->getMessageId();
         // dd($teste);
 
-        return $teste;
+        $bot = new TelegramBotClass();
+        $bot->sendMessage();
+
+        return true;
     }
 }

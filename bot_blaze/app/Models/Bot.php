@@ -13,6 +13,8 @@ class Bot extends Model
 
     protected $primaryKey = 'bot_id';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'bot_id',
         'bot_token',
