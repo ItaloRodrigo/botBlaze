@@ -4,17 +4,22 @@ namespace App\Services;
 
 use App\Models\Bot;
 use App\Models\ChatUser;
-use Illuminate\Support\Arr;
+use App\Models\Message;
+use DateTime;
 use Telegram\Bot\Api;
 
 class TelegramBotClass{
 
     protected $token;
     protected $bot;
+    protected $telegram;
+    protected $datetimenow;
 
     public function __construct() {
         $this->token = env('TELEGRAM_BOT_TOKEN');
         $this->bot = Bot::where('bot_token',$this->token)->get();
+        $this->telegram = new Api($this->token);
+        $this->datetimenow = new DateTime();
     }
 
     /**
@@ -22,10 +27,11 @@ class TelegramBotClass{
      *
      */
 
-    public function sendMessage(){
+    public function sendBotMessage(){
 
         $affected = $this->updateChatUser($this->getHistoryBot());
-        // dd($response[0]["message"]);
+        //---
+        dd($this->getHistoryBot());
 
         return $affected;
     }
@@ -37,16 +43,14 @@ class TelegramBotClass{
 
     protected function getHistoryBot(){
         //Requisita da API do Telegram o histório do chat
-        $telegram = new Api($this->token);
-
-        $history = $telegram->getUpdates();
+        $history = $this->telegram->getUpdates();
         return $history;
     }
 
     protected function updateChatUser($history){
 
         $affecteds = 0;
-        dd($history);
+        // dd($this->bot);
         foreach ($history as $key => $chat){
             $newchat = ChatUser::getChat($chat);
             //---
@@ -56,7 +60,7 @@ class TelegramBotClass{
                 /**
                  * Registra um novo chat de usuário
                  */
-                ChatUser::create([
+                $chatuser= ChatUser::create([
                     'cha_id' => 0,
                     'cha_bot_id' => $this->bot[0]->bot_id,
                     'cha_key' => $newchat['cha_key'],
@@ -71,6 +75,12 @@ class TelegramBotClass{
                  * [FALTA FAZER um COUNT(*) NA TABELA MENSAGEM FILTRANDO POR DIA PRA IDENTIFICAR AS NOVAS MENSAGENS]
                  */
 
+                Message::create([
+                    'mes_id' => 0,
+                    'mes_cha_id' => $chatuser->cha_id,
+                    'mes_text' => $newchat['message'],
+                    'mes_status' => 1, // 0 - enviado, 1 - recebido
+                ]);
 
                 //---
                 $affecteds ++;

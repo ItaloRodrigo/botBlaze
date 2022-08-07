@@ -16,6 +16,8 @@ class ChatUser extends Model
 
     public $timestamps = false;
 
+    public $incrementing = true;
+
     protected $fillable = [
         'cha_id',
         'cha_bot_id',

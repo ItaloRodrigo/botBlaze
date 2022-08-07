@@ -107,16 +107,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `blazeaposta`.`state`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `blazeaposta`.`state` (
-  `sta_id` INT NOT NULL AUTO_INCREMENT,
-  `sta_run` TINYINT NOT NULL COMMENT '0 - desligado\n1 - ligado\n',
-  PRIMARY KEY (`sta_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `blazeaposta`.`bot`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `blazeaposta`.`bot` (
@@ -160,6 +150,7 @@ CREATE TABLE IF NOT EXISTS `blazeaposta`.`message` (
   `mes_id` INT NOT NULL AUTO_INCREMENT,
   `mes_cha_id` INT NOT NULL,
   `mes_text` TEXT NULL,
+  `mes_status` TINYINT NULL COMMENT '0 - enviado\n1 - recebido',
   `mes_created` TIMESTAMP NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`mes_id`),
   INDEX `fk_message_chat1_idx` (`mes_cha_id` ASC) VISIBLE,

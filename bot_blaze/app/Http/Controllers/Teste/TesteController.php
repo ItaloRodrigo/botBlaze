@@ -9,6 +9,8 @@ use Telegram\Bot\Api;
 
 class TesteController extends Controller
 {
+    protected TelegramBotClass $bot;
+    protected $delay = 10;
 
     public function teste(){
         // $telegram = new Api('5546066078:AAGu7OdrsRjiGQwl_IY2kBIgNnqy_7OSKCU');
@@ -44,9 +46,18 @@ class TesteController extends Controller
         // $messageId = $response->getMessageId();
         // dd($teste);
 
-        $bot = new TelegramBotClass();
-        $bot->sendMessage();
+        // $this->bot = new TelegramBotClass();
+        // //---
+        // $count = 0;
+        // while(true){
+        //     $count++;
+        //     $this->
+        //     sleep($this->delay);
+        // }
 
-        return true;
+        $this->bot = new TelegramBotClass();
+        $afetadas = $this->bot->sendBotMessage();
+
+        return "Linhas afetadas {{$afetadas}}";
     }
 }

@@ -18,8 +18,7 @@ class Message extends Model
     protected $fillable = [
         'mes_id',
         'mes_cha_id',
-        'cha_key',
         'mes_text',
-        'mes_created'
+        'mes_status'
     ];
 }
