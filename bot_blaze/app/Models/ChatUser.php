@@ -24,7 +24,6 @@ class ChatUser extends Model
         'cha_key',
         'cha_firstname',
         'cha_lastname',
-        'cha_update_id',
         'cha_type',
         'cha_boot'
     ];

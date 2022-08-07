@@ -5,8 +5,11 @@ namespace App\Services;
 use App\Models\Bot;
 use App\Models\ChatUser;
 use App\Models\Message;
+use App\Models\MessageBot;
 use DateTime;
+use Illuminate\Support\Arr;
 use Telegram\Bot\Api;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 class TelegramBotClass{
 
@@ -29,10 +32,22 @@ class TelegramBotClass{
 
     public function sendBotMessage(){
 
-        $affected = $this->updateChatUser($this->getHistoryBot());
-        //---
-        dd($this->getHistoryBot());
+        // dd($this->getHistoryBot());
 
+        dd(BlazeBotClass::getBlaze());
+
+        $updates = $this->updatesMessage($this->getHistoryBot());
+        //---
+        $affected = $this->saveNewMessage($updates);
+        //---
+        $text = "testando - italo";
+        $response = $this->telegram->sendMessage([
+            'chat_id' => '5507982458',
+            'text' => $text
+        ]);
+        $this->saveNewMessageBot($response->getMessageId(), $text);
+
+        //---
         return $affected;
     }
 
@@ -47,16 +62,41 @@ class TelegramBotClass{
         return $history;
     }
 
-    protected function updateChatUser($history){
+    protected function updatesMessage($history){
+        $update_id = Message::max('mes_update_id');
+        //---
+        if($update_id == null){
+            $last = $history;
+        }else{
+            $last = Arr::where($history, function ($value, $key) use($update_id) {
+                return $value['update_id'] > $update_id;
+            });
+        }
+        //---
+        return $last;
+    }
 
+    protected function saveNewMessageBot($update_id, $text){
+
+        /**
+         * Registra os envios do Bot
+         */
+        MessageBot::create([
+            'mes_id' => 0,
+            'mes_bot_id' => $this->bot[0]->bot_id,
+            'mes_update_id' => $update_id,
+            'mes_text' => $text
+        ]);
+    }
+
+    protected function saveNewMessage($history){
         $affecteds = 0;
-        // dd($this->bot);
-        foreach ($history as $key => $chat){
+        foreach($history as $key => $chat){
             $newchat = ChatUser::getChat($chat);
             //---
-            $ok = ChatUser::where('cha_key',$newchat['cha_key'])->get();
-
-            if(count($ok) == 0){
+            $chatquery = ChatUser::where('cha_key',$newchat['cha_key'])->get();
+            // verifica se o usuário existe no banco
+            if(count($chatquery) == 0){
                 /**
                  * Registra um novo chat de usuário
                  */
@@ -66,26 +106,25 @@ class TelegramBotClass{
                     'cha_key' => $newchat['cha_key'],
                     'cha_firstname' => $newchat['cha_firstname'],
                     'cha_lastname' => $newchat['cha_lastname'],
-                    'cha_update_id' => $newchat['cha_update_id'],
                     'cha_type' => $newchat['cha_type'],
                     'cha_boot' => $newchat['cha_boot'],
                 ]);
-                /**
-                 * Registra a mensagem do usuário
-                 * [FALTA FAZER um COUNT(*) NA TABELA MENSAGEM FILTRANDO POR DIA PRA IDENTIFICAR AS NOVAS MENSAGENS]
-                 */
-
-                Message::create([
-                    'mes_id' => 0,
-                    'mes_cha_id' => $chatuser->cha_id,
-                    'mes_text' => $newchat['message'],
-                    'mes_status' => 1, // 0 - enviado, 1 - recebido
-                ]);
-
-                //---
-                $affecteds ++;
+            }else{
+                $chatuser = $chatquery[0];
             }
+            /**
+             * Registra a mensagem do usuário
+             */
+            Message::create([
+                'mes_id' => 0,
+                'mes_cha_id' => $chatuser->cha_id,
+                'mes_update_id' => $newchat['cha_update_id'],
+                'mes_text' => $newchat['message'],
+                'mes_status' => 1, // 0 - enviado, 1 - recebido
+            ]);
+            $affecteds++;
         }
+        //---
         return $affecteds;
     }
 
