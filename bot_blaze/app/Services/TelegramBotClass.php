@@ -34,7 +34,7 @@ class TelegramBotClass{
 
         // dd($this->getHistoryBot());
 
-        dd(BlazeBotClass::getBlaze());
+        dd(BlazeBotClass::saveBet());
 
         $updates = $this->updatesMessage($this->getHistoryBot());
         //---

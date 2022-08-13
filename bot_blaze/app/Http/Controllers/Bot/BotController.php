@@ -7,22 +7,59 @@ use Illuminate\Http\Request;
 use Telegram\Bot\Api;
 use App\Models\Bot;
 use App\Models\ChatUser;
+use App\Services\TelegramBotClass;
 
 class BotController extends Controller
 {
-    // protected $TOKEN = env('TELEGRAM_BOT_TOKEN');
+    protected TelegramBotClass $bot;
+    protected $delay = 10;
 
-    private function getToken(){
-        return env('TELEGRAM_BOT_TOKEN');
-    }
+    public function teste(){
+        // $telegram = new Api('5546066078:AAGu7OdrsRjiGQwl_IY2kBIgNnqy_7OSKCU');
+        // $telegram = new Api('TELEGRAM_BOT_TOKEN');
+        // $teste = $telegram->getUpdates();
+        // $bot = TelegramBotClass();
 
-    public function sendMessageBot(){
-        $bot = Bot::where('bot_token',$this->getToken())->get();
-        $telegram = new Api($this->getToken());
-        $response = $telegram->getUpdates();
-        $teste = ChatUser::updateAllChats($response);
-        // dd($response[0]["message"]);
 
-        return $teste;
+        // acessos
+        /**
+         * 1 - $teste[0]['update_id']
+         * 2 - $teste[0]['message']
+         * 3 -
+         */
+        // dd($teste);
+        // dd($teste[0]['message']);
+
+
+        //140321351
+        // id do italo = 5507982458
+        // id do canal teste = -1001546814958
+        // $response = $telegram->sendMessage([
+        //     'chat_id' => '5507982458',
+        //     'text' => 'Hello World!! Oi amor deu certo, de novo!!!!'
+        // ]);
+
+        // $response = $telegram->getChat([
+        //     'chat_id' => 5507982458
+        // ]);
+
+        // dd($response);
+
+        // $messageId = $response->getMessageId();
+        // dd($teste);
+
+        // $this->bot = new TelegramBotClass();
+        // //---
+        // $count = 0;
+        // while(true){
+        //     $count++;
+        //     $this->
+        //     sleep($this->delay);
+        // }
+
+        $this->bot = new TelegramBotClass();
+        $afetadas = $this->bot->sendBotMessage();
+
+        return "Linhas afetadas {{$afetadas}}";
     }
 }

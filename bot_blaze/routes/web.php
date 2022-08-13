@@ -20,5 +20,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('teste', [TesteController::class,'teste']);
-Route::get('teste2', [BotController::class,'sendMessageBot']);
+// Route::get('teste', [TesteController::class,'teste']);
+Route::get('teste', [BotController::class,'teste']);
