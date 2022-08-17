@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Console\Commands\BotTelegram;
 use App\Models\Bot;
 use App\Models\ChatUser;
+use App\Services\Bot\TelegramBotClass;
 use Telegram\Bot\Api;
 
 class BotService{

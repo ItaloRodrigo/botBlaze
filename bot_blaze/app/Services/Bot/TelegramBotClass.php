@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Bot;
 
 use App\Models\Bot;
 use App\Models\ChatUser;
 use App\Models\Message;
 use App\Models\MessageBot;
+use App\Services\Metrics\BlazeBotClass;
 use DateTime;
 use Illuminate\Support\Arr;
 use Telegram\Bot\Api;

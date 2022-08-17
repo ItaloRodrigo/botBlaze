@@ -1,3 +1,5 @@
 https://telegram-bot-sdk.readme.io/reference/getupdates
 
 https://core.telegram.org/bots/api#getchat
+
+composer require defstudio/telegraph # API Telegraph

@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Telegram\Bot\Api;
 use App\Models\Bot;
 use App\Models\ChatUser;
-use App\Services\TelegramBotClass;
+use App\Services\Bot\TelegramBotClass;
+use App\Services\MetricsBot;
 
 class BotController extends Controller
 {
@@ -57,9 +58,11 @@ class BotController extends Controller
         //     sleep($this->delay);
         // }
 
-        $this->bot = new TelegramBotClass();
-        $afetadas = $this->bot->sendBotMessage();
+        MetricsBot::runCrash();
 
-        return "Linhas afetadas {{$afetadas}}";
+        // $this->bot = new TelegramBotClass();
+        // $afetadas = $this->bot->sendBotMessage();
+
+        return true;
     }
 }
