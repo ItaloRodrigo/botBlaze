@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('QUEUE_CONNECTION', 'sync'),
+    'default' => env('QUEUE_CONNECTION', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -36,6 +36,7 @@ return [
 
         'database' => [
             'driver' => 'database',
+            'connection' => 'mysql', // eu adicionei esse campo (se for o caso deve ser retirado)
             'table' => 'jobs',
             'queue' => 'default',
             'retry_after' => 90,

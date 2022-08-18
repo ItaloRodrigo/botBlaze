@@ -20,6 +20,7 @@ class History extends Model
         'his_key_blaze',
         'his_crash_point',
         'his_created',
-        'his_total_bets_placed'
+        'his_total_bets_placed',
+        'his_detail'
     ];
 }

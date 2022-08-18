@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `blazeaposta`.`history` (
   `his_crash_point` FLOAT NOT NULL,
   `his_created` DATETIME NOT NULL,
   `his_total_bets_placed` INT NULL,
+  `his_detail` TINYINT NOT NULL COMMENT '0 - detalhes não salvo\n1 - detalhes salvos',
   PRIMARY KEY (`his_id`))
 ENGINE = InnoDB;
 
@@ -34,9 +35,9 @@ CREATE TABLE IF NOT EXISTS `blazeaposta`.`betting_user` (
   `beu_id` INT NOT NULL AUTO_INCREMENT,
   `beu_key_number` INT NULL,
   `beu_key_blaze` VARCHAR(45) NOT NULL,
-  `beu_username` VARCHAR(100) NOT NULL,
+  `beu_username` TEXT NULL,
   `beu_rank` VARCHAR(50) NOT NULL,
-  `beu_level` INT NOT NULL,
+  `beu_level` VARCHAR(40) NOT NULL,
   PRIMARY KEY (`beu_id`))
 ENGINE = InnoDB;
 
@@ -49,9 +50,9 @@ CREATE TABLE IF NOT EXISTS `blazeaposta`.`bets_detail` (
   `bet_his_id` INT NOT NULL,
   `bet_beu_id` INT NOT NULL,
   `bet_key_blaze` VARCHAR(45) NOT NULL,
-  `bet_cashed_out_at` FLOAT NOT NULL,
-  `bet_amount` FLOAT NOT NULL COMMENT 'Quantia',
-  `bet_win_amount` FLOAT NOT NULL,
+  `bet_cashed_out_at` FLOAT NULL,
+  `bet_amount` FLOAT NULL COMMENT 'Quantia',
+  `bet_win_amount` FLOAT NULL,
   `bet_status` VARCHAR(45) NULL COMMENT 'win\ncreated',
   PRIMARY KEY (`bet_id`),
   INDEX `fk_detail_history_idx` (`bet_his_id` ASC) VISIBLE,

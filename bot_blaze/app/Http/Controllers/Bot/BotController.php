@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Bot;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessDataBlaze;
 use Illuminate\Http\Request;
 use Telegram\Bot\Api;
 use App\Models\Bot;
 use App\Models\ChatUser;
 use App\Services\Bot\TelegramBotClass;
+use App\Services\Metrics\BlazeBotClass;
 use App\Services\MetricsBot;
 
 class BotController extends Controller
@@ -59,6 +61,11 @@ class BotController extends Controller
         // }
 
         MetricsBot::runCrash();
+
+        // ProcessDataBlaze::dispatch()->onQueue('process_data_blaze');
+
+
+
 
         // $this->bot = new TelegramBotClass();
         // $afetadas = $this->bot->sendBotMessage();

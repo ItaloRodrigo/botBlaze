@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\ProcessDataBlaze;
 use App\Services\Metrics\AnalisadorCrash;
 use App\Services\Metrics\BlazeBotClass;
 
@@ -13,6 +14,7 @@ class MetricsBot{
          *
          */
         BlazeBotClass::saveMinimalBet();
+        ProcessDataBlaze::dispatch()->onQueue('process_data_blaze');
 
         // AnalisadorCrash::analyser();
 
