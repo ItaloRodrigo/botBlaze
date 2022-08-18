@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Services\BotService;
+use App\Services\MetricsBot;
 use App\Services\TelegramBot;
 use App\Services\TelegramBotClass;
 use Illuminate\Console\Command;
@@ -51,7 +52,7 @@ class BotTelegram extends Command
         // $this->comment("Finalizando o teste");
         // $telegram = new TelegramBot();
         // TelegramBotClass::teste();
-        BotService::run($this);
+        MetricsBot::run($this);
         //---
         return 1;
     }

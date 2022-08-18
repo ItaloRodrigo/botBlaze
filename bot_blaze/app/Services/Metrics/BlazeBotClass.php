@@ -24,6 +24,7 @@ class BlazeBotClass
     {
         $recent_crash = self::getRecentCrash();
         //---
+        $counth = 0;
         foreach ($recent_crash as $key1 => $current) {
             /**
              * Pego o id corrente da crash
@@ -44,14 +45,18 @@ class BlazeBotClass
                     'his_total_bets_placed' => $detail_crash['total_bets_placed'],
                     'his_detail' => 0
                 ]);
+                $counth++;
             }
         }
+        return $counth;
     }
 
-    public static function saveDetailBet()
+    public function saveDetailBet()
     {
         $historys = History::where('his_detail', 0)->get();
         //---
+        // dd($historys);
+
         foreach ($historys as $key => $history) {
             /**
              * Crio um Job pra cada history
@@ -59,7 +64,7 @@ class BlazeBotClass
             History::where('his_id',$history->his_id)->update(['his_detail' => 1]);
 
             // dispatch(function() use($history){
-                $detail_crash = self::getDetailCrash($history->his_key_blaze);
+                $detail_crash = BlazeBotClass::getDetailCrash($history->his_key_blaze);
                 //---
                 /**
                  * Gravo os detalhes das apostas de usuários
@@ -71,7 +76,7 @@ class BlazeBotClass
                     //---
                     $count =  BettingUser::where('beu_key_blaze', $bet['user']['id_str'])->count();
                     //---
-                    $blaze_user = self::getBlazeUser($bet['user']['id_str']);
+                    $blaze_user = BlazeBotClass::getBlazeUser($bet['user']['id_str']);
                     //---
                     if ($count == 0) { //usuário inexsistente na base de dados
                         //---

@@ -11,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ProcessDataBlaze implements ShouldQueue
+class ProcessSaveDataBlaze implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -22,7 +22,7 @@ class ProcessDataBlaze implements ShouldQueue
      */
     public function __construct()
     {
-        $this->onQueue('process_data_blaze');
+        //
     }
 
     /**
@@ -32,7 +32,7 @@ class ProcessDataBlaze implements ShouldQueue
      */
     public function handle()
     {
-        BlazeBotClass::saveDetailBet();
-        return true;
+        MetricsBot::runCrash();
+        ProcessDetailBlaze::dispatch();
     }
 }
