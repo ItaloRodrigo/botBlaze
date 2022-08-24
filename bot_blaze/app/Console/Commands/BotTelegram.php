@@ -42,39 +42,9 @@ class BotTelegram extends Command
      */
     public function handle()
     {
-        // $cont = 0;
-        // $this->comment("Iniciando o teste");
-        // while(true){
-        //     $cont++;
-        //     $this->warn("teste do comando:{{$cont}}");
-        //     sleep(10);
-        // }
-        // $this->comment("Finalizando o teste");
-        // $telegram = new TelegramBot();
-        // TelegramBotClass::teste();
-        MetricsBot::run($this);
+        BotService::run($this);
+        // MetricsBot::run($this);
         //---
         return 1;
     }
-
-    // public function getSubscribedSignals(): array
-    // {
-    //     return [SIGINT, SIGTERM];
-    // }
-
-    // /**
-    //  * Handle an incoming signal.
-    //  *
-    //  * @param  int  $signal
-    //  * @return void
-    //  */
-    // public function handleSignal(int $signal): void
-    // {
-    //     if ($signal === SIGINT) {
-    //         $this->info("teste do comando");
-    //         $this->stopServer();
-
-    //         return;
-    //     }
-    // }
 }

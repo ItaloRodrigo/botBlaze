@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Console\Commands\BotTelegram;
+use App\Jobs\ProcessDetailBlaze;
 use App\Models\Bot;
 use App\Models\ChatUser;
 use App\Services\Bot\TelegramBotClass;
+use App\Services\Metrics\BlazeBotClass;
 use Telegram\Bot\Api;
 
 class BotService{
@@ -18,25 +20,34 @@ class BotService{
      */
 
     public static function run(BotTelegram $instance){
-        self::$bot = new TelegramBotClass();
-        //---
         $count = 0;
         $instance->line("Iniciando o serviço.....");
         while(true){
             $count++;
             $now = now();
             $instance->comment("[{{$now}}] - linha {{$count}}");
-            // $ok = self::$bot->sendMessage();
+            /**
+             * Registra os dados de aposta do Blaze
+             */
 
-            $instance->comment("Linhas afetadas:");
-            // $instance->comment(json_encode($ok));
-            $instance->comment("histórico:");
-            $instance->comment(self::$bot->getHistoryBotJSON());
+            $counth = BlazeBotClass::saveMinimalBet();
+
+            /**
+             * Job que processa em segundo plano os registros de detalhes das apostas Blaze
+             */
+            ProcessDetailBlaze::dispatch();
+
+            /**
+             * Aqui eu executo o bot
+             */
+            self::$bot = new TelegramBotClass();
+            self::$bot->run($instance);
+            //---
+            $instance->info("Históricos registrados: ".$counth);
             //---
             $instance->comment("----------------------------------");
             // $instance->comment("----------------------------------");
             sleep(self::$delay);
         }
-
     }
 }

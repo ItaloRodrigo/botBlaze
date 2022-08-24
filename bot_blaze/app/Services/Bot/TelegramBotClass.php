@@ -2,7 +2,9 @@
 
 namespace App\Services\Bot;
 
+use App\Console\Commands\BotTelegram;
 use App\Models\Bot;
+use App\Models\ChatBot;
 use App\Models\ChatUser;
 use App\Models\Message;
 use App\Models\MessageBot;
@@ -18,10 +20,11 @@ class TelegramBotClass{
     protected $bot;
     protected $telegram;
     protected $datetimenow;
+    protected BotTelegram $instance;
 
     public function __construct() {
         $this->token = env('TELEGRAM_BOT_TOKEN');
-        $this->bot = Bot::where('bot_token',$this->token)->get();
+        $this->bot = Bot::where('bot_token',$this->token)->get()[0];
         $this->telegram = new Api($this->token);
         $this->datetimenow = new DateTime();
     }
@@ -31,25 +34,39 @@ class TelegramBotClass{
      *
      */
 
-    public function sendBotMessage(){
+    public function run($instance){
+        $this->instance = $instance;
+        //----
+        if($this->bot->bot_active){
+            $chats_bot = ChatBot::where('cha_bot_id',$this->bot->bot_id)->get();
+            foreach($chats_bot as $chat_bot){
+                $this->sendMessageBot("BOT ON",$chat_bot);
+            }
+        }else{
+            return "Bot não está ativo!!";
+        }
+    }
 
-        // dd($this->getHistoryBot());
-
-        dd(BlazeBotClass::saveBet());
-
-        $updates = $this->updatesMessage($this->getHistoryBot());
-        //---
-        $affected = $this->saveNewMessage($updates);
-        //---
-        $text = "testando - italo";
+    protected function sendMessageBot($text,$chat_bot){
+        /**
+         * Aqui eu envio a mensagem!!
+         */
+        $this->instance->comment($text);
         $response = $this->telegram->sendMessage([
-            'chat_id' => '5507982458',
+            'chat_id' => $chat_bot->cha_key,
             'text' => $text
         ]);
-        $this->saveNewMessageBot($response->getMessageId(), $text);
-
+        /**
+         * Registra os envios do Bot
+         */
+        MessageBot::create([
+            'mes_id' => 0,
+            'mes_cha_id' => $chat_bot->cha_id,
+            'mes_update_id' => $response->getMessageId(),
+            'mes_text' => $text
+        ]);
         //---
-        return $affected;
+        return $response;
     }
 
 
@@ -77,18 +94,6 @@ class TelegramBotClass{
         return $last;
     }
 
-    protected function saveNewMessageBot($update_id, $text){
-
-        /**
-         * Registra os envios do Bot
-         */
-        MessageBot::create([
-            'mes_id' => 0,
-            'mes_bot_id' => $this->bot[0]->bot_id,
-            'mes_update_id' => $update_id,
-            'mes_text' => $text
-        ]);
-    }
 
     protected function saveNewMessage($history){
         $affecteds = 0;

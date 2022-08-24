@@ -17,7 +17,6 @@ class MessageBot extends Model
 
     protected $fillable = [
         'mes_id',
-        'mes_bot_id',
         'mes_cha_id',
         'mes_update_id',
         'mes_text'
