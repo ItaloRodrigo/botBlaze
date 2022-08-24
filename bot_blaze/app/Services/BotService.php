@@ -22,6 +22,14 @@ class BotService{
     public static function run(BotTelegram $instance){
         $count = 0;
         $instance->line("Iniciando o serviço.....");
+
+        /**
+         * Verifico se o Bot está ativo!
+         */
+
+        self::$bot = new TelegramBotClass($instance);
+        self::$bot->isActive();
+        //---
         while(true){
             $count++;
             $now = now();
@@ -40,8 +48,7 @@ class BotService{
             /**
              * Aqui eu executo o bot
              */
-            self::$bot = new TelegramBotClass();
-            self::$bot->run($instance);
+            self::$bot->run();
             //---
             $instance->info("Históricos registrados: ".$counth);
             //---

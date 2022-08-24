@@ -43,7 +43,6 @@ class BotTelegram extends Command
     public function handle()
     {
         BotService::run($this);
-        // MetricsBot::run($this);
         //---
         return 1;
     }

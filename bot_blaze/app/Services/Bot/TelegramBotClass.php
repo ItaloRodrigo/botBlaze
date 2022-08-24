@@ -8,11 +8,9 @@ use App\Models\ChatBot;
 use App\Models\ChatUser;
 use App\Models\Message;
 use App\Models\MessageBot;
-use App\Services\Metrics\BlazeBotClass;
-use DateTime;
+use App\Services\Metrics\MetricsBot;
 use Illuminate\Support\Arr;
 use Telegram\Bot\Api;
-use Telegram\Bot\Laravel\Facades\Telegram;
 
 class TelegramBotClass{
 
@@ -22,11 +20,12 @@ class TelegramBotClass{
     protected $datetimenow;
     protected BotTelegram $instance;
 
-    public function __construct() {
+    public function __construct($instance = null) {
+        $this->instance = $instance;
         $this->token = env('TELEGRAM_BOT_TOKEN');
         $this->bot = Bot::where('bot_token',$this->token)->get()[0];
         $this->telegram = new Api($this->token);
-        $this->datetimenow = new DateTime();
+        $this->datetimenow = now();
     }
 
     /**
@@ -34,13 +33,43 @@ class TelegramBotClass{
      *
      */
 
-    public function run($instance){
-        $this->instance = $instance;
-        //----
+    public function isActive(){
         if($this->bot->bot_active){
             $chats_bot = ChatBot::where('cha_bot_id',$this->bot->bot_id)->get();
             foreach($chats_bot as $chat_bot){
                 $this->sendMessageBot("BOT ON",$chat_bot);
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function run(){
+        if($this->bot->bot_active){
+            /**
+             * O algoritmo deve reconhecer o tipo de bot
+             *
+             * 1 - Crash
+             * 2 - Double
+             * 3 - ....
+             *
+             * if(type == 1){
+             *      MetricsBot::runCrash();
+             * }else{
+             *      MetricsBot::runDouble();
+             * }
+             *
+             */
+
+            MetricsBot::runCrash();
+            /**
+             * Pego os chats que o bot deve enviar mensagem!!
+             */
+            $chats_bot = ChatBot::where('cha_bot_id',$this->bot->bot_id)->get();
+            //---
+            foreach($chats_bot as $chat_bot){
+                $this->sendMessageBot("teste ".now(),$chat_bot);
             }
         }else{
             return "Bot não está ativo!!";
@@ -51,7 +80,10 @@ class TelegramBotClass{
         /**
          * Aqui eu envio a mensagem!!
          */
-        $this->instance->comment($text);
+        if($this->instance){
+            $this->instance->comment($text);
+        }
+        //---
         $response = $this->telegram->sendMessage([
             'chat_id' => $chat_bot->cha_key,
             'text' => $text
