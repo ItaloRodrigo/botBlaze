@@ -46,7 +46,8 @@ class BotService{
             ProcessDetailBlaze::dispatch();
 
             /**
-             * Aqui eu executo o bot
+             * Aqui eu executo o bot da Classe TelegramBotClass
+             * método ::run();
              */
             self::$bot->run();
             //---

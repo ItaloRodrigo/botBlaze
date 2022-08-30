@@ -31,6 +31,9 @@ class BlazeBotClass
              */
             $detail_crash = self::getDetailCrash($current['id']);
             //---
+            if($detail_crash == null){
+                $detail_crash['total_bets_placed'] = 0;
+            }
             /**
              * Gravo o histórico de jogadas
              */
@@ -41,7 +44,7 @@ class BlazeBotClass
                     'his_id' => 0,
                     'his_key_blaze' => $current['id'],
                     'his_crash_point' => $current['crash_point'],
-                    'his_created' => date('Y-m-d H:i:s'),
+                    // 'his_created' => date('Y-m-d H:i:s'),
                     'his_total_bets_placed' => $detail_crash['total_bets_placed'],
                     'his_detail' => 0
                 ]);
