@@ -22,7 +22,9 @@ class BlazeBotClass
 
     public static function saveMinimalBet()
     {
-        $recent_crash = self::getRecentCrash();
+        // 2022-09-12T01:16:55.858Z
+        $recent_crash = self::getHistoryBlaze()['records'];
+        // $recent_crash = self::getRecentCrash();
         //---
         $counth = 0;
         foreach ($recent_crash as $key1 => $current) {
@@ -39,12 +41,14 @@ class BlazeBotClass
              */
             $count = History::where('his_key_blaze', $current['id'])->count();
             //---
+            // date('d-m-Y H:i:s', strtotime('2022-09-12T01:16:55.858Z'))
+            //---
             if ($count == 0) {
                 $history = History::create([
                     'his_id' => 0,
                     'his_key_blaze' => $current['id'],
                     'his_crash_point' => $current['crash_point'],
-                    // 'his_created' => date('Y-m-d H:i:s'),
+                    'his_created' => date('Y-m-d H:i:s', strtotime($current['created_at'])),
                     'his_total_bets_placed' => $detail_crash['total_bets_placed'],
                     'his_detail' => 0
                 ]);
@@ -328,6 +332,12 @@ class BlazeBotClass
          * parâmetro 'OWld39KVk3' é o id do usuário
          */
         $response = Http::get('https://blaze.com/api/user_profiles/' . $id_str);
+
+        return $response->json();
+    }
+
+    protected static function getHistoryBlaze(){
+        $response = Http::get('https://api-v2.blaze.com/crash_games/recent/history?page=1');
 
         return $response->json();
     }
