@@ -69,6 +69,7 @@ class TelegramBotClass{
             $chats_bot = ChatBot::where('cha_bot_id',$this->bot->bot_id)->get();
             //---
             foreach($chats_bot as $chat_bot){
+                $this->saveNewMessage($this->getHistoryBot());
                 $this->sendMessageBot("teste ".now(),$chat_bot);
             }
         }else{
@@ -140,7 +141,7 @@ class TelegramBotClass{
                  */
                 $chatuser= ChatUser::create([
                     'cha_id' => 0,
-                    'cha_bot_id' => $this->bot[0]->bot_id,
+                    'cha_bot_id' => $this->bot->bot_id,
                     'cha_key' => $newchat['cha_key'],
                     'cha_firstname' => $newchat['cha_firstname'],
                     'cha_lastname' => $newchat['cha_lastname'],
